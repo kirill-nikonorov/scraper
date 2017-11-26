@@ -1,7 +1,0 @@
-staticOperators\ArgumentChecker.class
-staticOperators\HTMLReader.class
-Scraper.class
-staticOperators\CommandsRunner.class
-InfoRequest\InfoRequest.class
-infoRequestService\InfoRequestCreator.class
-infoRequestService\InfoRequestExecutor.class
