@@ -1,0 +1,7 @@
+staticOperators\ArgumentChecker.class
+staticOperators\HTMLReader.class
+Scraper.class
+infoRequestService\IRequestExecutor.class
+IRequest\IRequest.class
+staticOperators\CommandsRunner.class
+infoRequestService\IRequestCreator.class
