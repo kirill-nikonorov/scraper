@@ -1,0 +1,6 @@
+projectKey=myCompany:scraper
+serverUrl=http://localhost:9000
+serverVersion=6.7.0.33306
+dashboardUrl=http://localhost:9000/dashboard/index/myCompany:scraper
+ceTaskId=AV_5XUHs1UXxwSAVL-gZ
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AV_5XUHs1UXxwSAVL-gZ
