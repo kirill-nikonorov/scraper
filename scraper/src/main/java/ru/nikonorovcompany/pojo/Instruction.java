@@ -10,9 +10,6 @@ public class Instruction {
     private List<String> urls;
     private String words;
 
-    public Instruction() {
-    }
-
     public boolean isC() {
         return c;
     }

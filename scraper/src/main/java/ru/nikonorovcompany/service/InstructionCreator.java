@@ -22,7 +22,7 @@ public class InstructionCreator {
     }
 
     private List<String> readUrlsFromFile(String fileName) throws IOException {
-        String line = null;
+        String line;
         ArrayList<String> listOfStrings = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "cp1251"))) {
             while ((line = reader.readLine()) != null) {
@@ -53,10 +53,9 @@ public class InstructionCreator {
 
     private List<String> extractFilesContent(String[] listOfTextFiles) throws IOException {
         List<String> listOfUrls = new ArrayList<>();
-       for(String fileName : listOfTextFiles)
-       {
-           listOfUrls.addAll(readUrlsFromFile(fileName));
-       }
+        for (String fileName : listOfTextFiles) {
+            listOfUrls.addAll(readUrlsFromFile(fileName));
+        }
         return listOfUrls;
     }
 
@@ -67,7 +66,7 @@ public class InstructionCreator {
 
     private boolean isContainCommand(char c) {
         String regEx = "^[-–]" + c + "$";
-        return Arrays.stream(elements).anyMatch(s -> Pattern.compile(regEx).matcher(s).matches());
+        return Arrays.stream(elements).anyMatch(s -> Pattern.compile(regEx,Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE ).matcher(s).matches());
     }
 
     public Instruction createInstruction() throws IOException {
@@ -82,7 +81,7 @@ public class InstructionCreator {
 
     private String extractWords() {
         String regEx = "[\\w,]+";
-        return Arrays.stream(elements).filter(s -> s.matches(regEx)).collect(joining(","));
+        return Arrays.stream(elements).filter(w -> Pattern.compile(regEx,Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE ).matcher(w).matches()).collect(joining(","));
 
     }
 

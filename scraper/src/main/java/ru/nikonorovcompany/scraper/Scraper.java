@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Scraper {
     public static void main(String[] args) throws IOException {
-        
+
         Instruction instruction =new InstructionCreator(args).createInstruction();
 
         List<InfoRequest> list = new InfoRequestCreator(instruction).createInfoRequests();

@@ -53,7 +53,7 @@ public class InfoRequestCreator {
             html = dataScrapping(url);
             String words = instruction.getWords();
             Integer countsOfChars = instruction.isC() ? getCountsOfChars(html) : null;
-            Integer countsOfWords = instruction.isV() ? getCountsOfWords(html, instruction.getWords()) : null;
+            Integer countsOfWords = instruction.isW() ? getCountsOfWords(html, instruction.getWords()) : null;
             List<String> countsOfSentence = instruction.isE() ? getSentences(html, instruction.getWords()) : null;
             InfoRequest request = new InfoRequest(url, words, countsOfChars, countsOfWords, null, null, countsOfSentence);
 
@@ -73,7 +73,7 @@ public class InfoRequestCreator {
             Long startOfProcessing = System.nanoTime();
             String words = instruction.getWords();
             Integer countsOfChars = instruction.isC() ? getCountsOfChars(html) : null;
-            Integer countsOfWords = instruction.isV() ? getCountsOfWords(html, instruction.getWords()) : null;
+            Integer countsOfWords = instruction.isW() ? getCountsOfWords(html, instruction.getWords()) : null;
             List<String> sentences = instruction.isE() ? getSentences(html, instruction.getWords()) : null;
             Long endOfProcessing = System.nanoTime();
 

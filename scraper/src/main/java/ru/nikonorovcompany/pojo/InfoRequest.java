@@ -23,14 +23,6 @@ public class InfoRequest {
         this.listOfSentence = listOfSentence;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public String getWords() {
-        return words;
-    }
-
     public Integer getCountOfChars() {
         return countOfChars;
     }
@@ -56,6 +48,7 @@ public class InfoRequest {
 
         String result = "-----------------------------------";
         result += "\nFor Url =" + url;
+        result += words.length()>0? "\nword(s) is(are) = " +words : "\nthere is no any word in args";
         result += countOfChars != null ? "\ncount of characters on web page= " + countOfChars : "";
         result += countsOfWords != null ? "\ncount of provided word(s) occurrence on web page(s) = " + countsOfWords : "";
         result += scrapTime != null ? "\ntime spend on data scraping = " + scrapTime / 1000 + " mcSec " +

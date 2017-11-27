@@ -6,11 +6,10 @@ import java.util.List;
 
 public class InfoRequestsPrinter {
     private List<InfoRequest> listOfRequests;
-    private String listOfAllWords;
     private Integer totalCountOfChars;
-    private Integer totalCountsOfWords;
-    private Long totalScrapTime;
-    private Long totalProcessTime;
+    private Integer totalCountOfWords;
+    private Long totalScrapingTime;
+    private Long totalProcessingTime;
     private List<String> listOfAllSentence;
 
     public InfoRequestsPrinter(List<InfoRequest> listOfRequests) {
@@ -21,9 +20,9 @@ public class InfoRequestsPrinter {
 
         String result = "---------------Total---------------";
         result += totalCountOfChars != null ? "\ntotal count of characters on web page= " + totalCountOfChars : "";
-        result += totalCountsOfWords != null ? "\ntotal count of provided word(s) occurrence on web page(s) = " + totalCountsOfWords : "";
-        result += totalScrapTime != null ? "\ntotal time spend on data scraping = " + totalScrapTime + " mcSec " +
-                "\ntotal time spend on data processing  = " + totalProcessTime + " mcSec " : "";
+        result += totalCountOfWords != null ? "\ntotal count of provided word(s) occurrence on web page(s) = " + totalCountOfWords : "";
+        result += totalScrapingTime != null ? "\ntotal time spend on data scraping = " + totalScrapingTime /1000 + " mcSec " +
+                "\ntotal time spend on data processing  = " + totalProcessingTime /1000 + " mcSec " : "";
         result += listOfAllSentence != null ? "\ntotal list of Sentence with words : \n" + listOfAllSentence : "";
 
         System.out.println(result);
@@ -41,12 +40,12 @@ public class InfoRequestsPrinter {
 
     private void addToTotalData(InfoRequest r) {
 
-        listOfAllWords = r.getWords();
+
         totalCountOfChars = combine(totalCountOfChars, r.getCountOfChars());
-        totalCountsOfWords = combine(totalCountsOfWords, r.getCountsOfWords());
+        totalCountOfWords = combine(totalCountOfWords, r.getCountsOfWords());
         combine(listOfAllSentence, r.getListOfSentence());
-        totalScrapTime = combine(totalScrapTime, r.getScrapTime());
-        totalProcessTime = combine(totalProcessTime, r.getProcessTime());
+        totalScrapingTime = combine(totalScrapingTime, r.getScrapTime());
+        totalProcessingTime = combine(totalProcessingTime, r.getProcessTime());
 
     }
 
