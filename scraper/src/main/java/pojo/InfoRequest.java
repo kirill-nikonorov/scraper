@@ -1,67 +1,29 @@
 package pojo;
 
-import operators.CommandsRunner;
-import operators.HTMLReader;
-
 import java.util.List;
 
 public class InfoRequest {
 
-    private String url = "";
-    private String words = "";
-    private boolean v;
-    private boolean c;
-    private boolean w;
-    private boolean e;
-    private Integer cResult;
-    private Integer wResult;
-    private Long vScrapResult;
-    private Long vProcessResult;
-    private List<String> eResult;
+    protected String url = "";
+    protected String words = "";
+    protected Integer countOfChars;
+    protected Integer countsOfWords;
+    protected Long scrapTime;
+    protected Long processTime;
+    protected List<String> listOfSentence;
 
-
-
-    public void runCommands() {
-        if (v) {
-            long st;
-            long en;
-            st = System.nanoTime();
-            String html = HTMLReader.getContentOfHTTPPage(url);
-            en = System.nanoTime();
-            vScrapResult = (en - st) / 1000; //в микросекундах
-            st = System.nanoTime();
-            if (c) {
-                cResult = CommandsRunner.runCTask(html);
-            }
-            if (w) {
-                wResult = CommandsRunner.runWTask(html, words);
-            }
-            if (e) {
-                eResult = CommandsRunner.runETask(html, words);
-            }
-            en = System.nanoTime();
-            vProcessResult = (en - st) / 1000; //в микросекундах
-
-
-        } else {
-            String html = HTMLReader.getContentOfHTTPPage(url);
-            if (c) {
-                cResult = CommandsRunner.runCTask(html);
-            }
-            if (w) {
-                wResult = CommandsRunner.runWTask(html, words);
-            }
-            if (e) {
-                eResult = CommandsRunner.runETask(html, words);
-            }
-        }
-
+    public InfoRequest() {
 
     }
 
-
-    public boolean isV() {
-        return v;
+    public InfoRequest(String url, String words, Integer countOfChars, Integer countsOfWords, Long scrapTime, Long processTime, List<String> listOfSentence) {
+        this.url = url;
+        this.words = words;
+        this.countOfChars = countOfChars;
+        this.countsOfWords = countsOfWords;
+        this.scrapTime = scrapTime;
+        this.processTime = processTime;
+        this.listOfSentence = listOfSentence;
     }
 
     public String getUrl() {
@@ -80,92 +42,61 @@ public class InfoRequest {
         this.words = words;
     }
 
-    public void setV(boolean v) {
-        this.v = v;
+    public Integer getCountOfChars() {
+        return countOfChars;
     }
 
-    public void setC(boolean c) {
-        this.c = c;
+    public void setCountOfChars(Integer countOfChars) {
+        this.countOfChars = countOfChars;
     }
 
-    public void setW(boolean w) {
-        this.w = w;
+    public Integer getCountsOfWords() {
+        return countsOfWords;
     }
 
-    public void setE(boolean e) {
-        this.e = e;
+    public void setCountsOfWords(Integer countsOfWords) {
+        this.countsOfWords = countsOfWords;
     }
 
-    public Integer getcResult() {
-        return cResult;
+    public Long getScrapTime() {
+        return scrapTime;
     }
 
-    public void setCResult(Integer cResult) {
-        this.cResult = cResult;
+    public void setScrapTime(Long scrapTime) {
+        this.scrapTime = scrapTime;
     }
 
-    public Integer getWResult() {
-        return wResult;
+    public Long getProcessTime() {
+        return processTime;
     }
 
-    public void setWResult(Integer wResult) {
-        this.wResult = wResult;
+    public void setProcessTime(Long processTime) {
+        this.processTime = processTime;
     }
 
-    public Long getVScrapResult() {
-        return vScrapResult;
+    public List<String> getListOfSentence() {
+        return listOfSentence;
     }
 
-    public void setVScrapResult(Long vScrapResult) {
-        this.vScrapResult = vScrapResult;
+    public void setListOfSentence(List<String> listOfSentence) {
+        this.listOfSentence = listOfSentence;
     }
-
-    public Long getVProcessResult() {
-        return vProcessResult;
-    }
-
-    public void setVProcessResult(Long vProcessResult) {
-        this.vProcessResult = vProcessResult;
-    }
-
-    public void setEResult(List<String> eResult) {
-        this.eResult = eResult;
-    }
-
-    public boolean isC() {
-        return c;
-    }
-
-
-    public boolean isW() {
-        return w;
-    }
-
-
-    public boolean isE() {
-        return e;
-    }
-
-
-    public List<String> geteResult() {
-        return eResult;
-    }
-
 
     @Override
     public String toString() {
 
-        String result = "\n-----------------------------------";
+
+        String result = "-----------------------------------";
         result += "\nFor Url =" + url;
-        result += c ? "\nnumber of characters on web page= " + cResult : "";
-        result += w ? "\nnumber of provided word(s) occurrence on web page(s) = " + wResult : "";
-        result += v ? "\ntime spend on data scraping = " + vScrapResult + " mcSec " +
-                "\ntime spend on data processing  = " + vProcessResult + " mcSec " : "";
-        result += (eResult != null) ? "\nlist of Sentence with words : \n" + eResult : "";
+        result += countOfChars!=null ? "\ncount of characters on web page= " + countOfChars : "";
+        result += countsOfWords!=null ? "\ncount of provided word(s) occurrence on web page(s) = " + countsOfWords : "";
+        result += scrapTime!=null ? "\ntime spend on data scraping = " + scrapTime + " mcSec " +
+                "\ntime spend on data processing  = " + processTime + " mcSec " : "";
+        result += listOfSentence!= null ? "\nlist of Sentence with words : \n" + listOfSentence : "";
 
 
         return result;
-
     }
+
 }
 

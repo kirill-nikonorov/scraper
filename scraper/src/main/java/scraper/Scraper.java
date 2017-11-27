@@ -2,21 +2,22 @@ package scraper;
 
 import pojo.InfoRequest;
 import service.InfoRequestCreator;
-import service.InfoRequestExecutor;
+import pojo.Instruction;
+import service.InfoRequestsPrinter;
+import service.InstructionCreator;
 
 import java.util.List;
 
 public class Scraper {
     public static void main(String[] args) {
 
-         String[] attempt2 = "C:\\Users\\√агарин\\Desktop\\For_Project\\tryings\\qqq.txt Microsoft,Apple -v Цw Цc Цe".split(" ");
 
-        InfoRequestCreator creator = new InfoRequestCreator(attempt2);
 
-        List<InfoRequest> list = creator.createRequests();
+        Instruction instruction =new  InstructionCreator(args).createInstruction();
 
-        InfoRequestExecutor.execute(list);
+        List<InfoRequest> list = new InfoRequestCreator(instruction).createInfoRequests();
 
+        new InfoRequestsPrinter(list).print();
 
     }
 
