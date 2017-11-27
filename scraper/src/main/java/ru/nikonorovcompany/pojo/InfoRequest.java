@@ -1,4 +1,4 @@
-package pojo;
+package ru.nikonorovcompany.pojo;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
-package service;
+package ru.nikonorovcompany.service;
 
-import pojo.InfoRequest;
-import pojo.TotalInfoRequest;
+import ru.nikonorovcompany.pojo.InfoRequest;
+import ru.nikonorovcompany.pojo.TotalInfoRequest;
 
 import java.util.List;
 

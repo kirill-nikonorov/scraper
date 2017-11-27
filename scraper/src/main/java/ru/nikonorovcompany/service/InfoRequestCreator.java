@@ -1,16 +1,20 @@
-package service;
+package ru.nikonorovcompany.service;
 
-import pojo.InfoRequest;
-import pojo.Instruction;
+import ru.nikonorovcompany.pojo.InfoRequest;
+import ru.nikonorovcompany.pojo.Instruction;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class InfoRequestCreator {
 
@@ -20,28 +24,22 @@ public class InfoRequestCreator {
         this.instruction = instruction;
     }
 
-    private static String dataScrapping(String pageAddress) {
+    private static String dataScrapping(String pageAddress) throws IOException {
         String codePage = "UTF-8";
         StringBuilder sb = new StringBuilder();
-        try {
-
-            URL pageURL = new URL(pageAddress);
-            URLConnection uc = pageURL.openConnection();
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(
-                            uc.getInputStream(), codePage));
-            String inputLine;
-            while ((inputLine = br.readLine()) != null) {
-                sb.append(inputLine);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        URL pageURL = new URL(pageAddress);
+        URLConnection uc = pageURL.openConnection();
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(
+                        uc.getInputStream(), codePage));
+        String inputLine;
+        while ((inputLine = br.readLine()) != null) {
+            sb.append(inputLine);
         }
         return sb.toString();
-
     }
 
-    public List<InfoRequest> createInfoRequests() {
+    public List<InfoRequest> createInfoRequests() throws IOException {
         if (instruction.isV()) {
             return executeOnTime();
         } else {
@@ -49,7 +47,7 @@ public class InfoRequestCreator {
         }
     }
 
-    private List<InfoRequest> executeNotOnTime() {
+    private List<InfoRequest> executeNotOnTime() throws IOException {
         List<InfoRequest> listOfRequests = new ArrayList<>();
         String html;
         for (String url : instruction.getUrls()) {
@@ -67,7 +65,7 @@ public class InfoRequestCreator {
         return listOfRequests;
     }
 
-    private List<InfoRequest> executeOnTime() {
+    private List<InfoRequest> executeOnTime() throws IOException {
         List<InfoRequest> listOfRequests = new ArrayList<>();
         String html;
         for (String url : instruction.getUrls()) {

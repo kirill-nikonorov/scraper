@@ -1,4 +1,4 @@
-package pojo;
+package ru.nikonorovcompany.pojo;
 
 import java.util.List;
 
@@ -21,15 +21,6 @@ public class Instruction {
         return v;
     }
 
-    public Instruction(boolean c, boolean v, boolean w, boolean e, List<String> urls, String words) {
-        this.urls = urls;
-        this.words = words;
-        this.c = c;
-        this.v = v;
-        this.w = w;
-        this.e = e;
-
-    }
 
     public boolean isW() {
         return w;

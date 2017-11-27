@@ -1,4 +1,4 @@
-package pojo;
+package ru.nikonorovcompany.pojo;
 
 public class TotalInfoRequest extends InfoRequest {
 
