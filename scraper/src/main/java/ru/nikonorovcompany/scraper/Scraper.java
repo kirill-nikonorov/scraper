@@ -11,9 +11,7 @@ import java.util.List;
 
 public class Scraper {
     public static void main(String[] args) throws IOException {
-
-        //String[] task = "C:\\Users\\Гагарин\\Desktop\\For_Project\\tryings\\qqq.txt Microsoft,Apple  Povorot -c -w -v -e".split(" ");
-
+        
         Instruction instruction =new InstructionCreator(args).createInstruction();
 
         List<InfoRequest> list = new InfoRequestCreator(instruction).createInfoRequests();

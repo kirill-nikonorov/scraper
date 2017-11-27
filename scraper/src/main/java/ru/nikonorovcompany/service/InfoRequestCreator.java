@@ -6,7 +6,6 @@ import ru.nikonorovcompany.pojo.Instruction;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
 
 public class InfoRequestCreator {
 
@@ -53,7 +51,6 @@ public class InfoRequestCreator {
         for (String url : instruction.getUrls()) {
 
             html = dataScrapping(url);
-
             String words = instruction.getWords();
             Integer countsOfChars = instruction.isC() ? getCountsOfChars(html) : null;
             Integer countsOfWords = instruction.isV() ? getCountsOfWords(html, instruction.getWords()) : null;
@@ -106,16 +103,16 @@ public class InfoRequestCreator {
     }
 
     private List<String> getSentences(String html, String words) {
-        String[] arrOfWords = words.split(",");
         ArrayList<String> listOfSentences = new ArrayList<>();
-        String commonRegEx = "[^\\.!?;][^\\.!?;]*%s[^\\.!?]*[\\.!?;]";
-        for (String word : arrOfWords) {
-            String regEx = String.format(commonRegEx, word);
-            Matcher m = Pattern.compile(regEx, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(html);
+        String commonSentenceRegEx = "[^\\.!?;][^\\.!?;]*%s[^\\.!?]*[\\.!?;]";
+
+        Arrays.stream(words.split(",")).forEach(word -> {
+            final String SentnceRegEx = String.format(commonSentenceRegEx, word);
+            Matcher m = Pattern.compile(SentnceRegEx, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE | Pattern.DOTALL).matcher(html);
             while (m.find()) {
                 listOfSentences.add("- " + html.substring(m.start(), m.end()) + "\n");
             }
-        }
+        });
         return listOfSentences;
     }
 
