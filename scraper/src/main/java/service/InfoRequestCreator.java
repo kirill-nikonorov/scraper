@@ -1,183 +1,125 @@
 package service;
 
 import pojo.InfoRequest;
-import operators.ArgumentChecker;
+import pojo.Instruction;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class InfoRequestCreator {
-    public String[] getElements() {
-        return elements;
+
+    private Instruction instruction;
+
+    public InfoRequestCreator(Instruction instruction) {
+        this.instruction = instruction;
     }
 
-    public void setElements(String[] elements) {
-        this.elements = elements;
-    }
+    private static String dataScrapping(String pageAddress) {
+        String codePage = "UTF-8";
+        StringBuilder sb = new StringBuilder();
+        try {
 
-    public List<String> getListOfUrls() {
-        return listOfUrls;
-    }
-
-    public void setListOfUrls(List<String> listOfUrls) {
-        this.listOfUrls = listOfUrls;
-    }
-
-    public String getWords() {
-        return words;
-    }
-
-    public void setWords(String words) {
-        this.words = words;
-    }
-
-    public boolean isV() {
-        return v;
-    }
-
-    public void setV(boolean v) {
-        this.v = v;
-    }
-
-    public boolean isC() {
-        return c;
-    }
-
-    public void setC(boolean c) {
-        this.c = c;
-    }
-
-    public boolean isW() {
-        return w;
-    }
-
-    public void setW(boolean w) {
-        this.w = w;
-    }
-
-    public boolean isE() {
-        return e;
-    }
-
-    public void setE(boolean e) {
-        this.e = e;
-    }
-
-    private String[] elements = null;
-    private List<String> listOfUrls = new ArrayList();
-    private String words = "";
-    private boolean v;
-    private boolean c;
-    private boolean w;
-    private boolean e;
-
-    @Override
-    public String toString() {
-        return "InfoRequestCreator{" +
-                "elements=" + Arrays.toString(elements) +
-                ", listOfUrls=" + listOfUrls +
-                ", words='" + words + '\'' +
-                ", v=" + v +
-                ", c=" + c +
-                ", w=" + w +
-                ", e=" + e +
-                '}';
-    }
-
-    public InfoRequestCreator(String[] taskString) {
-        this.elements = taskString;
-        configureCreator();
-    }
-
-    private static String readUrlsFromFile(String fileName) {
-        String line = null;
-        StringBuilder builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName), "cp1251"))) {
-
-            while ((line = reader.readLine()) != null) {
-                builder.append(line);
-                builder.append("\n");
-
+            URL pageURL = new URL(pageAddress);
+            URLConnection uc = pageURL.openConnection();
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader(
+                            uc.getInputStream(), codePage));
+            String inputLine;
+            while ((inputLine = br.readLine()) != null) {
+                sb.append(inputLine);
             }
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return builder.toString();
-    }
-
-    public List<InfoRequest> createRequests() {
-        ArrayList<InfoRequest> listOfRequest = new ArrayList<>();
-        for(String url : listOfUrls) {
-            InfoRequest req = new InfoRequest();
-            req.setUrl(url);
-            req.setWords(words);
-            req.setC(c);
-            req.setE(e);
-            req.setV(v);
-            req.setW(w);
-            listOfRequest.add(req);
-        }
-        return listOfRequest;
-
+        return sb.toString();
 
     }
 
-    private void configureCreator() {
+    public List<InfoRequest> createInfoRequests() {
+        if (instruction.isV()) {
+            return executeOnTime();
+        } else {
+            return executeNotOnTime();
+        }
+    }
 
-        for (String element : elements) {
-            if (element.length() == 0) continue;
+    private List<InfoRequest> executeNotOnTime() {
+        List<InfoRequest> listOfRequests = new ArrayList<>();
+        String html;
+        for (String url : instruction.getUrls()) {
 
-            if (ArgumentChecker.isComands(element)) {
-                assignComand(element);
-                continue;
+            html = dataScrapping(url);
+
+            String words = instruction.getWords();
+            Integer countsOfChars = instruction.isC() ? getCountsOfChars(html) : null;
+            Integer countsOfWords = instruction.isV() ? getCountsOfWords(html, instruction.getWords()) : null;
+            List<String> countsOfSentence = instruction.isE() ? getSentences(html, instruction.getWords()) : null;
+            InfoRequest request = new InfoRequest(url, words, countsOfChars, countsOfWords, null, null, countsOfSentence);
+
+            listOfRequests.add(request);
+        }
+        return listOfRequests;
+    }
+
+    private List<InfoRequest> executeOnTime() {
+        List<InfoRequest> listOfRequests = new ArrayList<>();
+        String html;
+        for (String url : instruction.getUrls()) {
+            Long startOfScrapping = System.nanoTime();
+            html = dataScrapping(url);
+            Long endOfScrapping = System.nanoTime();
+
+            Long startOfProcessing = System.nanoTime();
+            String words = instruction.getWords();
+            Integer countsOfChars = instruction.isC() ? getCountsOfChars(html) : null;
+            Integer countsOfWords = instruction.isV() ? getCountsOfWords(html, instruction.getWords()) : null;
+            List<String> sentences = instruction.isE() ? getSentences(html, instruction.getWords()) : null;
+            Long endOfProcessing = System.nanoTime();
+
+            Long scrapingTime = endOfScrapping - startOfScrapping;
+            Long processTime = endOfProcessing - startOfProcessing;
+
+            InfoRequest request = new InfoRequest(url, words, countsOfChars, countsOfWords, scrapingTime, processTime, sentences);
+            listOfRequests.add(request);
+        }
+        return listOfRequests;
+    }
+
+    private Integer getCountsOfChars(String html) {
+        return html.length();
+    }
+
+    private Integer getCountsOfWords(String html, String words) {
+        int count = 0;
+        String[] arrOfWords = words.split(",");
+        for (String word : arrOfWords) {
+            Matcher m = Pattern.compile(word, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(html);
+            while (m.find()) {
+                count++;
             }
-
-            if (ArgumentChecker.isTxt(element)) {
-
-                String urls = readUrlsFromFile(element);
-                assignUrls(urls);
-
-                continue;
-            }
-
-            if (ArgumentChecker.isUrl(element)) {
-                listOfUrls.add(element);
-                continue;
-            }
-
-            words = element;
         }
-
+        return count;
     }
 
-    public void assignComand(String command) {
-        char com = command.charAt(1);
-        switch (com) {
-            case 'c':
-                c = true;
-                break;
-            case 'w':
-                w = true;
-                break;
-            case 'v':
-                v = true;
-                break;
-            case 'e':
-                e = true;
-                break;
-            default:
-                break;
+    private List<String> getSentences(String html, String words) {
+        String[] arrOfWords = words.split(",");
+        ArrayList<String> listOfSentences = new ArrayList<>();
+        String commonRegEx = "[^\\.!?;][^\\.!?;]*%s[^\\.!?]*[\\.!?;]";
+        for (String word : arrOfWords) {
+            String regEx = String.format(commonRegEx, word);
+            Matcher m = Pattern.compile(regEx, Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE).matcher(html);
+            while (m.find()) {
+                listOfSentences.add("- " + html.substring(m.start(), m.end()) + "\n");
+            }
         }
-
+        return listOfSentences;
     }
 
-    private void assignUrls(String urls) {
-        String[] arrOfUrls = urls.split("\n");
-        listOfUrls.addAll(Arrays.asList(arrOfUrls));
-    }
 
 }
