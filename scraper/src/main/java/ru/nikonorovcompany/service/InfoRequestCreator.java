@@ -22,7 +22,12 @@ public class InfoRequestCreator {
         this.instruction = instruction;
     }
 
-    private static String dataScrapping(String pageAddress) throws IOException {
+    private String rudDeletingOfAllTags(String data) {
+
+        return data.replaceAll("<[^<>]+>", "");
+    }
+
+    private String dataScrapping(String pageAddress) throws IOException {
         String codePage = "UTF-8";
         StringBuilder sb = new StringBuilder();
         URL pageURL = new URL(pageAddress);
@@ -51,6 +56,7 @@ public class InfoRequestCreator {
         for (String url : instruction.getUrls()) {
 
             html = dataScrapping(url);
+            html = rudDeletingOfAllTags(html);
             String words = instruction.getWords();
             Integer countsOfChars = instruction.isC() ? getCountsOfChars(html) : null;
             Integer countsOfWords = instruction.isW() ? getCountsOfWords(html, instruction.getWords()) : null;
@@ -69,6 +75,7 @@ public class InfoRequestCreator {
             Long startOfScrapping = System.nanoTime();
             html = dataScrapping(url);
             Long endOfScrapping = System.nanoTime();
+            html = rudDeletingOfAllTags(html);
 
             Long startOfProcessing = System.nanoTime();
             String words = instruction.getWords();

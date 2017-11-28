@@ -50,7 +50,7 @@ public class InfoRequest {
         result += "\nFor Url =" + url;
         result += words.length()>0? "\nword(s) is(are) = " +words : "\nthere is no any word in args";
         result += countOfChars != null ? "\ncount of characters on web page= " + countOfChars : "";
-        result += countsOfWords != null ? "\ncount of provided word(s) occurrence on web page(s) = " + countsOfWords : "";
+        result += countsOfWords != null ? "\ncount of provided words occurrence on web page(s) = " + countsOfWords : "";
         result += scrapTime != null ? "\ntime spend on data scraping = " + scrapTime / 1000 + " mcSec " +
                 "\ntime spend on data processing  = " + processTime / 1000 + " mcSec " : "";
         result += listOfSentence != null ? "\nlist of Sentence with words : \n" + listOfSentence : "";

@@ -12,6 +12,7 @@ public class InfoRequestsPrinter {
     private Long totalProcessingTime;
     private List<String> listOfAllSentence;
 
+
     public InfoRequestsPrinter(List<InfoRequest> listOfRequests) {
         this.listOfRequests = listOfRequests;
     }
@@ -21,10 +22,9 @@ public class InfoRequestsPrinter {
         String result = "---------------Total---------------";
         result += totalCountOfChars != null ? "\ntotal count of characters on web page= " + totalCountOfChars : "";
         result += totalCountOfWords != null ? "\ntotal count of provided word(s) occurrence on web page(s) = " + totalCountOfWords : "";
-        result += totalScrapingTime != null ? "\ntotal time spend on data scraping = " + totalScrapingTime /1000 + " mcSec " +
-                "\ntotal time spend on data processing  = " + totalProcessingTime /1000 + " mcSec " : "";
+        result += totalScrapingTime != null ? "\ntotal time spend on data scraping = " + totalScrapingTime / 1000 + " mcSec " +
+                "\ntotal time spend on data processing  = " + totalProcessingTime / 1000 + " mcSec " : "";
         result += listOfAllSentence != null ? "\ntotal list of Sentence with words : \n" + listOfAllSentence : "";
-
         System.out.println(result);
 
     }
@@ -56,6 +56,7 @@ public class InfoRequestsPrinter {
         } else
             totalValue.addAll(requestValue);
     }
+
 
     private Integer combine(Integer totalValue, Integer requestValue) {
         if (requestValue == null) return null;

@@ -65,7 +65,7 @@ public class InstructionCreator {
     }
 
     private boolean isContainCommand(char c) {
-        String regEx = "^[-–]" + c + "$";
+        String regEx = "^[-â€“]" + c + "$";
         return Arrays.stream(elements).anyMatch(s -> Pattern.compile(regEx,Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE ).matcher(s).matches());
     }
 
