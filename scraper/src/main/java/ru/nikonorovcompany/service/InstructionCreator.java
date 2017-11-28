@@ -80,7 +80,7 @@ public class InstructionCreator {
     }
 
     private String extractWords() {
-        String regEx = "[\\w,]+";
+        String regEx = "[\\w,\\p{InCyrillic}]+";
         return Arrays.stream(elements).filter(w -> Pattern.compile(regEx,Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE ).matcher(w).matches()).collect(joining(","));
 
     }
